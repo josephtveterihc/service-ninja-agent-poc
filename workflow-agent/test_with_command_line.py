@@ -17,7 +17,7 @@ async def main() -> None:
 
     Environment variables required:
     - AZURE_AI_PROJECT_ENDPOINT: Your Microsoft Foundry project endpoint
-    - AZURE_AI_MODEL_DEPLOYMENT_NAME: Your Microsoft Foundry model deployment name
+    - AZURE_AI_MODEL_NAME: Your Microsoft Foundry model deployment name
     """
 
     # Initialize observability for visualization.
@@ -27,7 +27,7 @@ async def main() -> None:
     async with get_credential() as credential:
         async with AzureAIAgentClient(
             project_endpoint=os.getenv("AZURE_AI_PROJECT_ENDPOINT"),
-            model_deployment_name=os.getenv("AZURE_AI_MODEL_DEPLOYMENT_NAME"),
+            model_deployment_name=os.getenv("AZURE_AI_MODEL_NAME"),
             async_credential=credential
         ) as chat_client:
             agent = await start_workflow(chat_client, as_agent=False)

@@ -50,7 +50,7 @@ This sample demonstrates the construction of a hosted agent workflow using the A
    AZURE_AI_PROJECT_ENDPOINT="your-foundry-project-endpoint"
 
    # Your model deployment name in Microsoft Foundry
-   AZURE_AI_MODEL_DEPLOYMENT_NAME="your-model-deployment-name"
+   AZURE_AI_MODEL_NAME="your-model-deployment-name"
    ```
 
    **Important**: Never commit the `.env` file to version control. Add it to your `.gitignore` file.

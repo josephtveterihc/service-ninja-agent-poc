@@ -63,8 +63,8 @@ except ImportError:
     )
 
 # Configuration - can be set via environment variables or updated here
-ENDPOINT = os.getenv("AZURE_AI_PROJECT_ENDPOINT", "https://poc-ai-foundry-wus-02.services.ai.azure.com/api/projects/poc-ai-foundry-wus-02-project")
-MODEL_DEPLOYMENT_NAME = os.getenv("AZURE_AI_MODEL_DEPLOYMENT_NAME") or os.getenv("AZURE_AI_MODEL_NAME", "gpt-4.1-mini")
+ENDPOINT = os.getenv("AZURE_AI_PROJECT_ENDPOINT")
+MODEL_DEPLOYMENT_NAME = os.getenv("AZURE_AI_MODEL_NAME", "gpt-4.1-mini")
 
 
 
