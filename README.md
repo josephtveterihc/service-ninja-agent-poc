@@ -66,26 +66,85 @@ The Service Ninja agent provides comprehensive service management capabilities:
 
 ## Setup
 
-1. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Prerequisites
+- **Node.js/Bun**: For the MCP server
+- **Python 3.11+**: For the workflow agent
+- **Azure CLI**: For authentication
 
-2. **MCP Server Integration**
-   The agent integrates with a local MCP server at `http://localhost:3000` for database operations. Ensure your MCP server is running before using the agent.
+### 1. Clone and Setup Project
+```bash
+git clone <repository-url>
+cd service-ninja-agent-poc
+```
 
-3. **Authentication Setup**
-   - Ensure you're logged into Azure: `az login`
-   - Or set up service principal credentials via environment variables
+### 2. Setup MCP Server (Node.js/TypeScript)
+```bash
+# Navigate to MCP server directory
+cd mcp-server
 
-4. **Configure Microsoft Foundry Endpoint**
-   ```bash
-   # Set your Microsoft Foundry project endpoint
-   export AZURE_AI_PROJECT_ENDPOINT="https://your-project-name.ai.azure.com"
-   
-   # Optionally set your model deployment name (defaults to gpt-4.1-mini)
-   export AZURE_AI_MODEL_NAME="gpt-4"
-   ```
+# Install dependencies using bun (recommended) or npm
+bun i
+# or
+npm install
+
+# Start the MCP server
+bun start:dev
+# or 
+npm run start:dev
+```
+
+The MCP server will start on `http://localhost:3000` and provides:
+- `POST /mcp/tool/call` - Tool execution endpoint
+- `GET /mcp/capabilities` - Server capabilities  
+- `GET /mcp/tools` - Available tools
+
+### 3. Setup Workflow Agent (Python)
+```bash
+# Navigate to workflow agent directory (from project root)
+cd workflow-agent
+
+# Create virtual environment (recommended)
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install Python dependencies
+pip install -r requirements.txt
+```
+
+### 4. Authentication Setup
+```bash
+# Ensure you're logged into Azure
+az login
+
+# Or set up service principal credentials via environment variables
+# export AZURE_CLIENT_ID="your-client-id"
+# export AZURE_CLIENT_SECRET="your-client-secret" 
+# export AZURE_TENANT_ID="your-tenant-id"
+```
+
+### 5. Configure Microsoft Foundry Endpoint
+```bash
+# Set your Microsoft Foundry project endpoint
+export AZURE_AI_PROJECT_ENDPOINT="https://your-project-name.ai.azure.com"
+
+# Optionally set your model deployment name (defaults to gpt-4.1-mini)
+export AZURE_AI_MODEL_NAME="gpt-4"
+```
+
+### 6. Environment Variables
+Create `.env` files as needed:
+
+**mcp-server/.env** (optional):
+```env
+PORT=3000
+NODE_ENV=development
+```
+
+**workflow-agent/.env** (optional):
+```env
+AZURE_AI_PROJECT_ENDPOINT=https://your-project-name.ai.azure.com
+AZURE_AI_MODEL_NAME=gpt-4
+```
 
 ## How It Works
 
@@ -103,10 +162,41 @@ User Request → Service Ninja (Tools + MCP Server) → Response Agent → User
 - **Local Tools**: Direct Python functions for immediate operations
 - **MCP Server Tools**: Database-backed operations via HTTP calls to local MCP server
 
-## Running the Agent
+## Running the Application
 
-### **Basic Usage:**
+### 1. Start the MCP Server
+```bash
+# From project root
+cd mcp-server
+bun run dev
+# or
+npm run dev
+```
+The server should start on `http://localhost:3000`
+
+### 2. Run the Workflow Agent
+
+**Option A: VS Code Integration**
+```bash
+# From project root  
+cd workflow-agent
+python test_with_vscode.py
+```
+Then in VS Code:
+- View → Command Palette (Cmd + Shift + P)
+- Select "Microsoft Foundry: Open ContainerAgent Playground Locally"
+- Choose where to run the agent
+
+**Option B: Command Line**
+```bash
+# From project root
+cd workflow-agent
+python test_with_command_line.py
+```
+
+### 3. Basic Usage Example
 ```python
+# From workflow-agent directory
 from workflow_core import start_workflow, get_credential
 from agent_framework.azure import AzureAIAgentClient
 
@@ -121,12 +211,6 @@ workflow_agent = await start_workflow(chat_client, as_agent=True)
 response = await workflow_agent.run("List all my projects")
 print(response.messages[-1].content)
 ```
-
-### **MCP Server Integration:**
-The agent automatically connects to your local MCP server for persistent storage operations. Make sure your MCP server is running at `http://localhost:3000` with the following endpoints:
-- `POST /mcp/tool/call` - Tool execution endpoint
-- `GET /mcp/capabilities` - Server capabilities
-- `GET /mcp/tools` - Available tools
 
 ## Example Usage
 
@@ -169,28 +253,58 @@ The agent expects your MCP server to provide these tools:
 
 ## Troubleshooting
 
-### MCP Server Connection Issues
+### MCP Server Issues
 If you see MCP server connection errors:
-- Ensure your MCP server is running at `http://localhost:3000`
-- Check that the `/mcp/tool/call` endpoint is available
-- Verify your MCP server implements the expected tool interface
+- Ensure the MCP server is running: `cd mcp-server && bun run dev`
+- Verify it's accessible at `http://localhost:3000`
+- Check that the required endpoints are available:
+  - `POST /mcp/tool/call` - Tool execution endpoint
+  - `GET /mcp/capabilities` - Server capabilities
+  - `GET /mcp/tools` - Available tools
 
 ### Azure Authentication Issues
 If you encounter authentication errors:
 - Run `az login` to authenticate with Azure
 - Ensure your Azure AI project endpoint is correctly configured
 - Check that your service principal has proper permissions
+- Verify environment variables are set correctly
 
-### Package Conflicts
-If you encounter version conflicts:
-1. Uninstall conflicting packages: `pip uninstall agent-framework agent-framework-core agent-framework-azure-ai -y`
-2. Reinstall from requirements: `pip install -r requirements.txt`
+### Python Environment Issues
+If you encounter Python package conflicts:
+1. Create a fresh virtual environment:
+   ```bash
+   cd workflow-agent
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+2. Uninstall conflicting packages: 
+   ```bash
+   pip uninstall agent-framework agent-framework-core agent-framework-azure-ai -y
+   ```
+3. Reinstall from requirements: 
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Running locally
-There are 2 ways to run locally.
-1. python test_with_vscode.py
-   VSCODE -> View -> Command Palette (cmd + shift + p)
-      Microsoft Foundry: Open ContainerAgent Playground Locally
-      select where to run the agent
+### Node.js/Bun Issues
+If you have issues with the MCP server:
+- Ensure you have Node.js 18+ or Bun installed
+- Try clearing node_modules and reinstalling:
+  ```bash
+  cd mcp-server
+  rm -rf node_modules
+  bun install  # or npm install
+  ```
+- Check TypeScript compilation: `bun run build` or `npm run build`
 
-2. python test_with_command_line.py
+### Development Mode
+For development, you can run both components with auto-reload:
+```bash
+# Terminal 1: MCP Server with auto-reload
+cd mcp-server
+bun run dev
+
+# Terminal 2: Python agent development
+cd workflow-agent  
+# Your development commands here
+```
