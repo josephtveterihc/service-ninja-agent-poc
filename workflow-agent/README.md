@@ -189,4 +189,8 @@ If you encounter version conflicts:
 ### Running locally
 There are 2 ways to run locally.
 1. python test_with_vscode.py
+   VSCODE -> View -> Command Palette (cmd + shift + p)
+      Microsoft Foundry: Open ContainerAgent Playground Locally
+      select where to run the agent
+
 2. python test_with_command_line.py
