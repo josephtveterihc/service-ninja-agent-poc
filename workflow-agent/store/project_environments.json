@@ -1,0 +1,20 @@
+[
+  {
+    "id": "16637d82-10b8-4028-bec2-507221f7ab4b",
+    "name": "dev",
+    "description": "",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964"
+  },
+  {
+    "id": "0f06b9df-4b3d-4f64-8c27-c13a9677e4ee",
+    "name": "test",
+    "description": "",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964"
+  },
+  {
+    "id": "b603a7d5-141d-4633-b1ef-8fc35576e195",
+    "name": "prod",
+    "description": "",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964"
+  }
+]

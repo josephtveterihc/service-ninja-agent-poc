@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package rag;
+
+service RAGService {
+  rpc Query(QueryRequest) returns (QueryResponse);
+  rpc AddDocument(AddDocumentRequest) returns (AddDocumentResponse);
+  rpc DeleteDocument(DeleteDocumentRequest) returns (DeleteDocumentResponse);
+}
+
+message QueryRequest {
+  string query = 1;
+  int32 top_k = 2;
+  float threshold = 3;
+}
+
+message QueryResponse {
+  string answer = 1;
+  repeated Document sources = 2;
+  float confidence = 3;
+}
+
+message Document {
+  string id = 1;
+  string content = 2;
+  map<string, string> metadata = 3;
+  float score = 4;
+}
+
+message AddDocumentRequest {
+  Document document = 1;
+}
+
+message AddDocumentResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message DeleteDocumentRequest {
+  string document_id = 1;
+}
+
+message DeleteDocumentResponse {
+  bool success = 1;
+  string message = 2;
+}
+{
+  "name": "fn-rag",
+  "version": "1.0.0",
+  "description": "RAG server with gRPC endpoints",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "ts-node src/index.ts",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "proto:gen": "grpc_tools_node_protoc --js_out=import_style=commonjs,binary:./src/generated --grpc_out=grpc_js:./src/generated --plugin=protoc-gen-grpc=./node_modules/.bin/grpc_tools_node_protoc_plugin -I ./proto ./proto/*.proto"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.9.0",
+    "@grpc/proto-loader": "^0.7.8",
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "dotenv": "^16.3.1",
+    "openai": "^4.0.0",
+    "faiss-node": "^0.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "@types/express": "^4.17.17",
+    "@types/cors": "^2.8.13",
+    "@typescript-eslint/eslint-plugin": "^6.4.0",
+    "@typescript-eslint/parser": "^6.4.0",
+    "eslint": "^8.47.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6",
+  }
+}

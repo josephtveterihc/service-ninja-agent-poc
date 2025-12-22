@@ -1,0 +1,32 @@
+[
+  {
+    "id": "d5b75422-a01e-4703-9383-fb050d4cd15c",
+    "name": "archive-results-text-service",
+    "description": "Service for text related archived results functionalities",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964",
+    "env_id": "16637d82-10b8-4028-bec2-507221f7ab4b",
+    "health_check_url": "https://ear-dev.intermountainhealth.org/api/ear-dev/v1/services/archive-results-text-service/health-check",
+    "alive_check_url": "https://ear-dev.intermountainhealth.org/api/ear-dev/v1/services/archive-results-text-service",
+    "apikey": "1300977a52643b776c742b8e296771ce394410b592d0cd455af4af67b4cc55a9"
+  },
+  {
+    "id": "78da8a83-5c72-4306-af1d-5bdda0682f94",
+    "name": "archive-results-text-service",
+    "description": "Service for text related archived results functionalities",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964",
+    "env_id": "0f06b9df-4b3d-4f64-8c27-c13a9677e4ee",
+    "health_check_url": "https://ear-tst.intermountainhealth.org/api/ear-tst/v1/services/archive-results-text-service/health-check",
+    "alive_check_url": "https://ear-tst.intermountainhealth.org/api/ear-tst/v1/services/archive-results-text-service",
+    "apikey": "d23723d0605c99e4ee442db2192e18b97f1463e53366c2d875178253c318a4eb"
+  },
+  {
+    "id": "bb1c49ae-8c84-4e43-bbbc-6d5f6e2c44a7",
+    "name": "archive-results-text-service",
+    "description": "Service for text related archived results functionalities",
+    "project_id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964",
+    "env_id": "b603a7d5-141d-4633-b1ef-8fc35576e195",
+    "health_check_url": null,
+    "alive_check_url": "https://ear-dev.intermountainhealth.org/api/ear-dev/v1/services/archive-results-text-service",
+    "apikey": null
+  }
+]

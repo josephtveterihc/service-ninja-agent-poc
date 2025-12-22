@@ -1,0 +1,32 @@
+{
+  "name": "ih-service-ninja-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server with gRPC endpoints",
+  "type": "module",
+  "main": "dist/index.js",
+  "author": "Joseph Tveter",
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "bun run --watch server.ts",
+    "start": "bun run dist/server.js",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "current-git-branch": "^2.0.2",
+    "dotenv": "^17.2.3",
+    "elysia": "^1.4.19",
+    "eslint": "^9.39.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@modelcontextprotocol/inspector": "^0.18.0",
+    "@types/bun": "^1.3.4",
+    "globals": "^16.5.0",
+    "prettier": "^3.7.4",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.50.0"
+  }
+}

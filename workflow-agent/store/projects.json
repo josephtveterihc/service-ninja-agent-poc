@@ -1,0 +1,12 @@
+[
+  {
+    "id": "fa7d9c8e-769c-4a41-bdad-c60ecce5a964",
+    "name": "archived-results",
+    "description": "The Archived Results project provides legacy data to providers."
+  },
+  {
+    "id": "6c31b9ac-de1d-4bc9-86cb-f3797d7a20e3",
+    "name": "my-health-plus",
+    "description": "Legacy Patient Portal"
+  }
+]

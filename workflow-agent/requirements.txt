@@ -1,0 +1,20 @@
+azure-ai-agentserver-agentframework==1.0.0b7
+httpx
+# Microsoft Agent Framework packages - specific stable versions
+agent-framework-azure-ai==1.0.0b251204 --pre
+
+# Azure Identity for authentication
+azure-identity
+
+# Typing extensions for better type hints (if using older Python)
+typing-extensions
+
+# System monitoring utilities
+psutil
+
+# Environment variable management
+python-dotenv
+
+# PDF processing capabilities for monitoring documentation
+PyPDF2>=3.0.0
+pdfplumber>=0.9.0
