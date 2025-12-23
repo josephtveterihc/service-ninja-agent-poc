@@ -98,6 +98,15 @@ export interface CreateServiceNinjaContact {
 }
 
 /**
+ * Interface for service-ninja-resource-contact table (junction table)
+ */
+export interface ServiceNinjaResourceContact {
+  resourceId: number
+  contactId: number
+  role: string
+}
+
+/**
  * Database query result types
  */
 export type QueryResult<T> = T | null

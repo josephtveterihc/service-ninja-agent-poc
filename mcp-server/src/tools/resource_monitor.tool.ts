@@ -134,8 +134,21 @@ export async function getProjectResourcesHealthStatusTool({ projectId, envId }: 
 export async function getResourceAliveStatusTool({ resourceId }: { resourceId: number }): Promise<McpToolCallResponse> {
   console.log('--- getResourceAliveStatusTool ---')
   try {
+    if (!resourceId) {
+      console.warn('--- Resource ID not provided ---')
+      return {
+        isError: true,
+        content: [
+          {
+            type: 'text',
+            text: 'Resource ID is required',
+          },
+        ],
+      }
+    }
     const resource = (await getServiceNinjaResource({ id: resourceId })) as ServiceNinjaResource
     if (!resource) {
+      console.warn(`--- Resource with ID ${resourceId} not found ---`)
       return {
         isError: true,
         content: [
@@ -149,6 +162,7 @@ export async function getResourceAliveStatusTool({ resourceId }: { resourceId: n
 
     const { name, headers, aliveCheckUrl } = resource
     if (!aliveCheckUrl) {
+      console.warn(`--- No alive check URL configured for resource "${name}" ---`)
       return {
         isError: true,
         content: [

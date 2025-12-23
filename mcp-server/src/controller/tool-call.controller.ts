@@ -19,9 +19,25 @@ import {
   readServiceNinjaResourceTool,
   updateServiceNinjaResourceTool,
 } from '../tools/service-ninja/service-ninja-resource.tool.js'
+
 import { type McpToolCallRequest, type McpToolCallResponse } from '../types/server.types.js'
-import type { ServiceNinjaEnv, ServiceNinjaResource } from '../sql-lite/sql-lite-table.types.js'
+import type { ServiceNinjaContact, ServiceNinjaEnv, ServiceNinjaResource, ServiceNinjaResourceContact } from '../sql-lite/sql-lite-table.types.js'
 import { getProjectResourcesHealthStatusTool, getResourceAliveStatusTool, getResourceHealthStatusTool } from '../tools/resource_monitor.tool.js'
+import {
+  createServiceNinjaResourceContactTool,
+  deleteServiceNinjaResourceContactTool,
+  getResourceContactToolListTool,
+  readServiceNinjaResourceContactTool,
+  updateServiceNinjaResourceContactTool,
+} from '../tools/service-ninja/service-ninja-resource-contact.tool.js'
+import {
+  createServiceNinjaContactTool,
+  deleteServiceNinjaContactTool,
+  getContactToolListTool,
+  readServiceNinjaContactTool,
+  searchServiceNinjaContactsTool,
+  updateServiceNinjaContactTool,
+} from '../tools/service-ninja/service-ninja-contact.tool.js'
 
 export async function ToolCallController({ body }: { body: McpToolCallRequest }): Promise<McpToolCallResponse> {
   console.log('--- ToolCallController ---')
@@ -103,6 +119,34 @@ export async function ToolCallController({ body }: { body: McpToolCallRequest })
         return getProjectResourcesHealthStatusTool(args as { projectId: number; envId: number })
       case 'get_resource_alive_status':
         return getResourceAliveStatusTool(args as { resourceId: number })
+
+      // Resource Contact tools
+      case 'create_resource_contact':
+        return createServiceNinjaResourceContactTool(args as ServiceNinjaResourceContact)
+      case 'list_resource_contacts':
+        return getResourceContactToolListTool((args as { resourceId?: number; contactId?: number })?.resourceId, (args as { resourceId?: number; contactId?: number })?.contactId)
+      case 'get_resource_contact_by_ids':
+        return readServiceNinjaResourceContactTool(args as { resourceId: number; contactId: number })
+      case 'update_resource_contact':
+        return updateServiceNinjaResourceContactTool(args as Partial<ServiceNinjaResourceContact> & { resourceId: number; contactId: number })
+      case 'delete_resource_contact':
+        return deleteServiceNinjaResourceContactTool(args as { resourceId: number; contactId: number })
+
+      // Contact tools
+      case 'create_contact':
+        return createServiceNinjaContactTool(args as { firstName: string; lastName: string; email: string; phone?: string })
+      case 'list_contacts':
+        return getContactToolListTool()
+      case 'get_contact_by_id':
+        return readServiceNinjaContactTool(args as { id: number })
+      case 'get_contact_by_email':
+        return readServiceNinjaContactTool(args as { email: string })
+      case 'update_contact':
+        return updateServiceNinjaContactTool(args as Partial<ServiceNinjaContact> & { id: number })
+      case 'delete_contact':
+        return deleteServiceNinjaContactTool(args as { id: number })
+      case 'search_contacts':
+        return searchServiceNinjaContactsTool(args as { searchTerm: string })
 
       default:
         return {

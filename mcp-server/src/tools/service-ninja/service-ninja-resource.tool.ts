@@ -90,7 +90,7 @@ export async function readServiceNinjaResourceTool({
 export async function updateServiceNinjaResourceTool(params: Partial<ServiceNinjaResource> & { id: number }): Promise<McpToolCallResponse> {
   console.log('--- updateServiceNinjaResourceTool --- params:', params)
   const res = await updateServiceNinjaResource(params)
-  return { isError: false, content: [{ type: 'text', text: `Resource updated successfully.` }] }
+  return { isError: false, content: [{ type: 'text', text: res?.success ? `Resource updated successfully.` : `Failed to update resource.` }] }
 }
 
 /**

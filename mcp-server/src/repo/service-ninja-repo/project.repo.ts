@@ -1,6 +1,7 @@
 import type { ServiceNinjaProject } from '../../sql-lite/sql-lite-table.types'
 import { getOrCreateSqlLite } from '../../sql-lite/sql-lite.init'
 
+const TABLE = '"service-ninja-project"'
 /**
  * Method: getServiceNinjaProjects
  * Description: Retrieves all Service Ninja projects from the database.
@@ -9,7 +10,7 @@ import { getOrCreateSqlLite } from '../../sql-lite/sql-lite.init'
 export async function getServiceNinjaProjects() {
   try {
     const db = await getOrCreateSqlLite()
-    const query = db.query(`SELECT * FROM "service-ninja-project"`)
+    const query = db.query(`SELECT * FROM ${TABLE}`)
     const projects = query.all() as ServiceNinjaProject[]
     return projects || []
   } catch (error) {
@@ -29,10 +30,10 @@ export async function getServiceNinjaProject({ name, id }: { name?: string | und
       throw new Error('Either name or id must be provided')
     }
     const db = await getOrCreateSqlLite()
-    const sql = `SELECT * FROM "service-ninja-project" WHERE ${name ? 'name = ?' : 'id = ?'}`
+    const sql = `SELECT * FROM ${TABLE} WHERE ${name ? 'name = ?' : 'id = ?'}`
     const query = db.query(sql)
-    // @ts-ignore
-    const project = query.get(name ?? id) as ServiceNinjaProject
+    const key = name ?? (id as string | number)
+    const project = query.get(key) as ServiceNinjaProject
     return project
   } catch (error) {
     throw new Error(`Failed to get project: ${error}`)
@@ -52,7 +53,7 @@ export async function createServiceNinjaProject(params: { name: string; descript
       throw new Error('Project name and description are required')
     }
     const db = await getOrCreateSqlLite()
-    const query = db.query(`INSERT INTO "service-ninja-project" (name, description) VALUES (?, ?)`)
+    const query = db.query(`INSERT INTO ${TABLE} (name, description) VALUES (?, ?)`)
     const result = query.run(params.name, params.description)
     return { success: result.changes > 0 }
   } catch (error) {
@@ -90,7 +91,7 @@ export async function updateServiceNinjaProject(params: Partial<ServiceNinjaProj
 
     values.push(params.id) // ID for WHERE clause
 
-    const sql = `UPDATE "service-ninja-project" SET ${fieldsToUpdate.join(', ')} WHERE id = ?`
+    const sql = `UPDATE ${TABLE} SET ${fieldsToUpdate.join(', ')} WHERE id = ?`
     const query = db.query(sql)
     const result = query.run(...values)
     return { success: result.changes > 0 }
@@ -111,7 +112,7 @@ export async function deleteServiceNinjaProject(id: number): Promise<{ success: 
       throw new Error('Project ID is required for deletion')
     }
     const db = await getOrCreateSqlLite()
-    const query = db.query(`DELETE FROM "service-ninja-project" WHERE id = ?`)
+    const query = db.query(`DELETE FROM ${TABLE} WHERE id = ?`)
     const result = query.run(id)
     return { success: result.changes > 0 }
   } catch (error) {

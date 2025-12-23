@@ -219,6 +219,22 @@ def create_mcp_server_tools():
         create_mcp_tool("get_resource_health_status", "Get health status of a specific resource by making a request to its health check URL"),
         create_mcp_tool("get_project_resources_health_status", "Get health status of all resources in a specific project environment"),
         create_mcp_tool("get_resource_alive_status", "Check if a specific resource is alive and responding by making a request to its alive check URL"),
+        
+        # Contact tools
+        create_mcp_tool("create_contact", "Create a new contact"),
+        create_mcp_tool("list_contacts", "List all contacts"),
+        create_mcp_tool("get_contact_by_id", "Get a contact by its ID"),
+        create_mcp_tool("get_contact_by_email", "Get a contact by its email address"),
+        create_mcp_tool("update_contact", "Update an existing contact"),
+        create_mcp_tool("delete_contact", "Delete an existing contact"),
+        create_mcp_tool("search_contacts", "Search contacts by name or email"),
+        
+        # Resource-Contact tools
+        create_mcp_tool("create_resource_contact", "Create a new resource-contact association"),
+        create_mcp_tool("list_resource_contacts", "List resource-contact associations, optionally filtered by resource or contact"),
+        create_mcp_tool("get_resource_contact_by_ids", "Get a specific resource-contact association by resource ID and contact ID"),
+        create_mcp_tool("update_resource_contact", "Update the role of an existing resource-contact association"),
+        create_mcp_tool("delete_resource_contact", "Delete a resource-contact association"),
     ]
 
 async def start_workflow(chat_client: AzureAIAgentClient, as_agent: bool = True):

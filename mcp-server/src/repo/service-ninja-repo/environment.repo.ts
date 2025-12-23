@@ -1,6 +1,7 @@
 import type { ServiceNinjaEnv } from '../../sql-lite/sql-lite-table.types'
 import { getOrCreateSqlLite } from '../../sql-lite/sql-lite.init'
 
+const TABLE = '"service-ninja-env"'
 /**
  * Method: getServiceNinjaEnvs
  * Description: Retrieves all Service Ninja environments from the database.
@@ -10,7 +11,7 @@ import { getOrCreateSqlLite } from '../../sql-lite/sql-lite.init'
 export async function getServiceNinjaEnvs(projectId?: number) {
   try {
     const db = await getOrCreateSqlLite()
-    let sql = `SELECT * FROM "service-ninja-env"`
+    let sql = `SELECT * FROM ${TABLE}`
     const params = []
 
     if (projectId) {
@@ -39,7 +40,7 @@ export async function getServiceNinjaEnv({ name, id, projectId }: { name?: strin
     }
     const db = await getOrCreateSqlLite()
 
-    let sql = `SELECT * FROM "service-ninja-env" WHERE ${name ? 'name = ?' : 'id = ?'}`
+    let sql = `SELECT * FROM ${TABLE} WHERE ${name ? 'name = ?' : 'id = ?'}`
     const params = [name ?? id]
 
     if (projectId) {
@@ -68,7 +69,7 @@ export async function createServiceNinjaEnv(params: { name: string | undefined; 
       throw new Error('Environment name and projectId are required')
     }
     const db = await getOrCreateSqlLite()
-    const query = db.query(`INSERT INTO "service-ninja-env" (name, description, projectId) VALUES (?, ?, ?)`)
+    const query = db.query(`INSERT INTO ${TABLE} (name, description, projectId) VALUES (?, ?, ?)`)
     const result = query.run(params.name, params.description || '', params.projectId)
     return { success: result.changes > 0 }
   } catch (error) {
@@ -110,7 +111,7 @@ export async function updateServiceNinjaEnv(params: Partial<ServiceNinjaEnv> & {
 
     values.push(params.id) // ID for WHERE clause
 
-    const sql = `UPDATE "service-ninja-env" SET ${fieldsToUpdate.join(', ')} WHERE id = ?`
+    const sql = `UPDATE ${TABLE} SET ${fieldsToUpdate.join(', ')} WHERE id = ?`
     const query = db.query(sql)
     const result = query.run(...values)
     return { success: result.changes > 0 }
@@ -131,7 +132,7 @@ export async function deleteServiceNinjaEnv(id: number): Promise<{ success: bool
       throw new Error('Environment ID is required for deletion')
     }
     const db = await getOrCreateSqlLite()
-    const query = db.query(`DELETE FROM "service-ninja-env" WHERE id = ?`)
+    const query = db.query(`DELETE FROM ${TABLE} WHERE id = ?`)
     const result = query.run(id)
     return { success: result.changes > 0 }
   } catch (error) {
@@ -151,7 +152,7 @@ export async function deleteServiceNinjaEnvsByProjectId(projectId: number): Prom
       throw new Error('Project ID is required for deletion')
     }
     const db = await getOrCreateSqlLite()
-    const query = db.query(`DELETE FROM "service-ninja-env" WHERE projectId = ?`)
+    const query = db.query(`DELETE FROM ${TABLE} WHERE projectId = ?`)
     const result = query.run(projectId)
     return { success: true, deletedCount: result.changes }
   } catch (error) {

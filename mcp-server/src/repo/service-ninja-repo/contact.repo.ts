@@ -1,4 +1,4 @@
-import type { ServiceNinjaContact } from '../../sql-lite/sql-lite-table.types'
+import type { CreateServiceNinjaContact, ServiceNinjaContact } from '../../sql-lite/sql-lite-table.types'
 import { getOrCreateSqlLite } from '../../sql-lite/sql-lite.init'
 
 /**
@@ -31,8 +31,8 @@ export async function getServiceNinjaContact({ email, id }: { email?: string | u
     const db = await getOrCreateSqlLite()
     const sql = `SELECT * FROM "service-ninja-contact" WHERE ${email ? 'email = ?' : 'id = ?'}`
     const query = db.query(sql)
-    // @ts-ignore
-    const contact = query.get(email ?? id) as ServiceNinjaContact
+    const key = email ? email : id!
+    const contact = query.get(key) as ServiceNinjaContact
     return contact
   } catch (error) {
     throw new Error(`Failed to get contact: ${error}`)
@@ -45,7 +45,7 @@ export async function getServiceNinjaContact({ email, id }: { email?: string | u
  * Arguments: An object containing the contact details.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function createServiceNinjaContact(params: { firstName: string; lastName: string; email: string; phone?: string }): Promise<{ success: boolean }> {
+export async function createServiceNinjaContact(params: CreateServiceNinjaContact): Promise<{ success: boolean }> {
   try {
     if (!params.firstName || !params.lastName || !params.email) {
       throw new Error('First name, last name, and email are required')

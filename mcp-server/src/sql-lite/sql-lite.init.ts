@@ -46,6 +46,15 @@ CREATE TABLE IF NOT EXISTS "service-ninja-contact" (
 );
 `
 
+const createResourceContactTable = `
+CREATE TABLE IF NOT EXISTS "service-ninja-resource-contact" (
+  resourceId INTEGER NOT NULL,
+  contactId INTEGER NOT NULL,
+  role TEXT NOT NULL,
+  PRIMARY KEY (resourceId, contactId)
+);
+`
+
 /**
  * Method: getOrCreateSqlLite
  * Description: Initializes and returns the SQLite database instance.
@@ -66,11 +75,13 @@ export async function getOrCreateSqlLite() {
       const envQuery = db.query(createServiceNinjaEnvTable)
       const resourceQuery = db.query(createServiceNinjaResourceTable)
       const contactQuery = db.query(createContactTable)
+      const resourceContactQuery = db.query(createResourceContactTable)
 
       projectQuery.run()
       envQuery.run()
       resourceQuery.run()
       contactQuery.run()
+      resourceContactQuery.run()
     }
 
     return db
