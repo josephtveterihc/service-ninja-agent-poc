@@ -6,9 +6,9 @@ import {
   updateServiceNinjaResource,
 } from '../../repo/service-ninja-repo'
 import type { ServiceNinjaResource } from '../../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../../types'
+import type { McpToolCallResult } from '../../types'
 
-export async function createServiceNinjaResourceTool(args: Partial<ServiceNinjaResource>): Promise<McpToolCallResponse> {
+export async function createServiceNinjaResourceTool(args: Partial<ServiceNinjaResource>): Promise<McpToolCallResult> {
   const { name, projectId, envId } = args
   const resources = await getServiceNinjaResources(projectId, envId)
   const existingResource = resources.find((resource: { name: string }) => resource.name.toLowerCase() === name?.toLowerCase())
@@ -41,19 +41,9 @@ export async function createServiceNinjaResourceTool(args: Partial<ServiceNinjaR
  * Method: readServiceNinjaResourceTool
  * Description: Retrieves a specific Service Ninja resource by name or ID.
  * Arguments: An object containing either the resource name or ID, and optionally projectId and envId.
- * Returns: A promise that resolves to an McpToolCallResponse containing the resource details.
+ * Returns: A promise that resolves to an McpToolCallResult containing the resource details.
  */
-export async function readServiceNinjaResourceTool({
-  name,
-  id,
-  projectId,
-  envId,
-}: {
-  name?: string
-  id?: number
-  projectId?: number
-  envId?: number
-}): Promise<McpToolCallResponse> {
+export async function readServiceNinjaResourceTool({ name, id, projectId, envId }: { name?: string; id?: number; projectId?: number; envId?: number }): Promise<McpToolCallResult> {
   console.log('--- readServiceNinjaResourceTool ---', { name, id, projectId, envId })
   const resource = await getServiceNinjaResource({ name, id, projectId, envId })
 
@@ -87,7 +77,7 @@ export async function readServiceNinjaResourceTool({
  * Arguments: An object containing the resource ID and fields to update.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function updateServiceNinjaResourceTool(params: Partial<ServiceNinjaResource> & { id: number }): Promise<McpToolCallResponse> {
+export async function updateServiceNinjaResourceTool(params: Partial<ServiceNinjaResource> & { id: number }): Promise<McpToolCallResult> {
   console.log('--- updateServiceNinjaResourceTool --- params:', params)
   const res = await updateServiceNinjaResource(params)
   return { isError: false, content: [{ type: 'text', text: res?.success ? `Resource updated successfully.` : `Failed to update resource.` }] }
@@ -99,9 +89,10 @@ export async function updateServiceNinjaResourceTool(params: Partial<ServiceNinj
  * Arguments: An object containing the resource ID.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function deleteServiceNinjaResourceTool(params: { id: number }): Promise<McpToolCallResponse> {
+export async function deleteServiceNinjaResourceTool(params: { id: number }): Promise<McpToolCallResult> {
   console.log('--- deleteServiceNinjaResourceTool --- params:', params)
-  const res = await deleteServiceNinjaResource(params.id)
+  // TODO - Handle Throw
+  await deleteServiceNinjaResource(params.id)
   return { isError: false, content: [{ type: 'text', text: `Resource deleted successfully.` }] }
 }
 
@@ -109,9 +100,9 @@ export async function deleteServiceNinjaResourceTool(params: { id: number }): Pr
  * Method: getResourceToolListTool
  * Description: Retrieves the list of Service Ninja resources from the database, optionally filtered by project and/or environment.
  * Arguments: Optional projectId and envId for filtering.
- * Returns: A promise that resolves to an McpToolCallResponse containing the list of resources.
+ * Returns: A promise that resolves to an McpToolCallResult containing the list of resources.
  */
-export async function getResourceToolListTool(projectId?: number, envId?: number): Promise<McpToolCallResponse> {
+export async function getResourceToolListTool(projectId?: number, envId?: number): Promise<McpToolCallResult> {
   console.log('--- getResourceToolListTool --- projectId:', projectId, 'envId:', envId)
   const resources = await getServiceNinjaResources(projectId, envId)
   return {
@@ -119,8 +110,7 @@ export async function getResourceToolListTool(projectId?: number, envId?: number
     content: [
       {
         type: 'text',
-        data: JSON.stringify({ resources }),
-        text: `Resource list retrieved successfully.`,
+        text: JSON.stringify({ resources }),
       },
     ],
   }

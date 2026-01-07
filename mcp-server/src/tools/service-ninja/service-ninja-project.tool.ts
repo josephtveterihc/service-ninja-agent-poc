@@ -1,8 +1,8 @@
 import { createServiceNinjaProject, deleteServiceNinjaProject, getServiceNinjaProject, getServiceNinjaProjects, updateServiceNinjaProject } from '../../repo/service-ninja-repo'
 import type { ServiceNinjaProject } from '../../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../../types'
+import type { McpToolCallResult } from '../../types'
 
-export async function createServiceNinjaProjectTool(args: { name: string; description: string }): Promise<McpToolCallResponse> {
+export async function createServiceNinjaProjectTool(args: { name: string; description: string }): Promise<McpToolCallResult> {
   console.log('--- createServiceNinjaProjectTool --- args:', args)
   const { name, description } = args
   const projects = await getServiceNinjaProjects()
@@ -36,9 +36,9 @@ export async function createServiceNinjaProjectTool(args: { name: string; descri
  * Method: readServiceNinjaProjectTool
  * Description: Retrieves a specific Service Ninja project by name or ID.
  * Arguments: An object containing either the project name or ID.
- * Returns: A promise that resolves to an McpToolCallResponse containing the project details.
+ * Returns: A promise that resolves to an McpToolCallResult containing the project details.
  */
-export async function readServiceNinjaProjectTool({ name, id }: { name?: string; id?: number }): Promise<McpToolCallResponse> {
+export async function readServiceNinjaProjectTool({ name, id }: { name?: string; id?: number }): Promise<McpToolCallResult> {
   // This shold be implemented to read a specific project by ID or name
   const project = await getServiceNinjaProject({ name, id })
 
@@ -72,9 +72,10 @@ export async function readServiceNinjaProjectTool({ name, id }: { name?: string;
  * Arguments: An object containing the project ID, name, and/or description.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function updateServiceNinjaProjectTool(params: Partial<ServiceNinjaProject>): Promise<McpToolCallResponse> {
+export async function updateServiceNinjaProjectTool(params: Partial<ServiceNinjaProject>): Promise<McpToolCallResult> {
   console.log('--- updateServiceNinjaProjectTool --- params:', params)
-  const res = await updateServiceNinjaProject(params)
+  // TODO - Handle Throw
+  await updateServiceNinjaProject(params)
   return { isError: false, content: [{ type: 'text', text: `Project updated successfully.` }] }
 }
 
@@ -84,9 +85,10 @@ export async function updateServiceNinjaProjectTool(params: Partial<ServiceNinja
  * Arguments: An object containing the project ID.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function deleteServiceNinjaProjectTool(params: { id: number }): Promise<McpToolCallResponse> {
+export async function deleteServiceNinjaProjectTool(params: { id: number }): Promise<McpToolCallResult> {
   console.log('--- deleteServiceNinjaProjectTool --- params:', params)
-  const res = await deleteServiceNinjaProject(params.id)
+  // TODO - Handle Throw
+  await deleteServiceNinjaProject(params.id)
   return { isError: false, content: [{ type: 'text', text: `Project deleted successfully.` }] }
 }
 
@@ -94,9 +96,9 @@ export async function deleteServiceNinjaProjectTool(params: { id: number }): Pro
  * Method: getProjectToolListTool
  * Description: Retrieves the list of Service Ninja projects from the database.
  * Arguments: None
- * Returns: A promise that resolves to an McpToolCallResponse containing the list of projects.
+ * Returns: A promise that resolves to an McpToolCallResult containing the list of projects.
  */
-export async function getProjectToolListTool(): Promise<McpToolCallResponse> {
+export async function getProjectToolListTool(): Promise<McpToolCallResult> {
   console.log('--- getProjectToolListTool ---')
   const projects = await getServiceNinjaProjects()
   return {
@@ -104,8 +106,8 @@ export async function getProjectToolListTool(): Promise<McpToolCallResponse> {
     content: [
       {
         type: 'text',
-        data: JSON.stringify({ projects }),
-        text: `Project list retrieved successfully.`,
+        text: JSON.stringify({ projects }),
+        // text: `Project list retrieved successfully.`,
       },
     ],
   }

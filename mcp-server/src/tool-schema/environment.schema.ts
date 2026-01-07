@@ -4,6 +4,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'create_environment',
     description: 'Create a new environment within a project',
+    functionName: 'createServiceNinjaEnvironmentTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -30,6 +31,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'list_environments',
     description: 'List all environments, optionally filtered by project',
+    functionName: 'getEnvironmentToolListTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -45,6 +47,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'get_environment_by_id',
     description: 'Get an environment by its ID',
+    functionName: 'readServiceNinjaEnvironmentTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -65,6 +68,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'get_environment_by_name',
     description: 'Get an environment by its name',
+    functionName: 'readServiceNinjaEnvironmentTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -86,6 +90,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'update_environment',
     description: 'Update an existing environment',
+    functionName: 'updateServiceNinjaEnvironmentTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -117,6 +122,7 @@ export const environmentToolSchemas: McpToolSchema[] = [
   {
     name: 'delete_environment',
     description: 'Delete an existing environment',
+    functionName: 'deleteServiceNinjaEnvironmentTool',
     inputSchema: {
       type: 'object',
       properties: {

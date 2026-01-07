@@ -1,4 +1,5 @@
-import { type McpToolCallResponse } from '../types/server.types.js'
+import type { McpToolCallResult } from '../types/mcp.types'
+import { type JsonObj } from '../types/server.types'
 
 interface SearchDocumentsArgs {
   query: string
@@ -7,7 +8,7 @@ interface SearchDocumentsArgs {
   includeContent?: boolean
 }
 
-export function searchDocumentsTool(args: Record<string, any>): McpToolCallResponse {
+export function searchDocumentsTool(args: JsonObj): McpToolCallResult {
   try {
     const { query, limit = 10, category, includeContent = false } = args as SearchDocumentsArgs
 
@@ -15,10 +16,12 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
     if (!query || typeof query !== 'string' || query.trim().length === 0) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'query is required and must be a non-empty string'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'query is required and must be a non-empty string',
+          },
+        ],
       }
     }
 
@@ -34,7 +37,7 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
         category: 'monitoring',
         lastModified: '2024-12-15T10:30:00Z',
         relevance: 0.95,
-        content: includeContent ? 'Full content of monitoring best practices document...' : undefined
+        content: includeContent ? 'Full content of monitoring best practices document...' : undefined,
       },
       {
         id: 'doc_002',
@@ -43,7 +46,7 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
         category: 'setup',
         lastModified: '2024-12-14T14:22:00Z',
         relevance: 0.87,
-        content: includeContent ? 'Full content of project setup guidelines...' : undefined
+        content: includeContent ? 'Full content of project setup guidelines...' : undefined,
       },
       {
         id: 'doc_003',
@@ -52,7 +55,7 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
         category: 'alerts',
         lastModified: '2024-12-13T09:15:00Z',
         relevance: 0.82,
-        content: includeContent ? 'Full content of alert configuration reference...' : undefined
+        content: includeContent ? 'Full content of alert configuration reference...' : undefined,
       },
       {
         id: 'doc_004',
@@ -61,26 +64,20 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
         category: 'health-checks',
         lastModified: '2024-12-12T16:45:00Z',
         relevance: 0.78,
-        content: includeContent ? 'Full content of health check implementation guide...' : undefined
-      }
+        content: includeContent ? 'Full content of health check implementation guide...' : undefined,
+      },
     ]
 
     // Filter by category if provided
-    let filteredDocs = category 
-      ? mockDocuments.filter(doc => doc.category === category)
-      : mockDocuments
+    let filteredDocs = category ? mockDocuments.filter((doc) => doc.category === category) : mockDocuments
 
     // Simple text matching (in a real implementation, this would use proper search)
-    filteredDocs = filteredDocs.filter(doc => 
-      doc.title.toLowerCase().includes(sanitizedQuery) ||
-      doc.excerpt.toLowerCase().includes(sanitizedQuery) ||
-      doc.category.toLowerCase().includes(sanitizedQuery)
+    filteredDocs = filteredDocs.filter(
+      (doc) => doc.title.toLowerCase().includes(sanitizedQuery) || doc.excerpt.toLowerCase().includes(sanitizedQuery) || doc.category.toLowerCase().includes(sanitizedQuery)
     )
 
     // Sort by relevance and apply limit
-    const results = filteredDocs
-      .sort((a, b) => b.relevance - a.relevance)
-      .slice(0, sanitizedLimit)
+    const results = filteredDocs.sort((a, b) => b.relevance - a.relevance).slice(0, sanitizedLimit)
 
     const searchResult = {
       query: sanitizedQuery,
@@ -89,26 +86,30 @@ export function searchDocumentsTool(args: Record<string, any>): McpToolCallRespo
       limit: sanitizedLimit,
       category: category || 'all',
       includeContent,
-      searchedAt: new Date().toISOString()
+      searchedAt: new Date().toISOString(),
     }
 
     return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify(searchResult, null, 2)
-      }],
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(searchResult, null, 2),
+        },
+      ],
       _meta: {
         toolName: 'search_documents',
-        executionTime: Date.now()
-      }
+        executionTime: Date.now(),
+      },
     }
   } catch (error) {
     return {
       isError: true,
-      content: [{
-        type: 'text',
-        text: `Failed to search documents: ${error instanceof Error ? error.message : 'Unknown error'}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text: `Failed to search documents: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        },
+      ],
     }
   }
 }

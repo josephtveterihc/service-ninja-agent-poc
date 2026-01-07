@@ -9,9 +9,9 @@ import {
   updateResourceContact,
 } from '../../repo/service-ninja-repo'
 import type { ServiceNinjaResourceContact } from '../../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../../types'
+import type { McpToolCallResult } from '../../types'
 
-export async function createServiceNinjaResourceContactTool(args: ServiceNinjaResourceContact): Promise<McpToolCallResponse> {
+export async function createServiceNinjaResourceContactTool(args: ServiceNinjaResourceContact): Promise<McpToolCallResult> {
   console.log('--- createServiceNinjaResourceContactTool --- args:', args)
   const { resourceId, contactId, role } = args
 
@@ -42,7 +42,7 @@ export async function createServiceNinjaResourceContactTool(args: ServiceNinjaRe
   }
 
   try {
-    const res = await createResourceContact({ resourceId, contactId, role })
+    await createResourceContact({ resourceId, contactId, role })
     return {
       isError: false,
       content: [
@@ -69,9 +69,9 @@ export async function createServiceNinjaResourceContactTool(args: ServiceNinjaRe
  * Method: readServiceNinjaResourceContactTool
  * Description: Retrieves a specific resource-contact association by resource ID and contact ID.
  * Arguments: An object containing the resource ID and contact ID.
- * Returns: A promise that resolves to an McpToolCallResponse containing the association details.
+ * Returns: A promise that resolves to an McpToolCallResult containing the association details.
  */
-export async function readServiceNinjaResourceContactTool({ resourceId, contactId }: { resourceId: number; contactId: number }): Promise<McpToolCallResponse> {
+export async function readServiceNinjaResourceContactTool({ resourceId, contactId }: { resourceId: number; contactId: number }): Promise<McpToolCallResult> {
   console.log('--- readServiceNinjaResourceContactTool --- args:', { resourceId, contactId })
 
   if (!resourceId || !contactId) {
@@ -135,9 +135,9 @@ export async function readServiceNinjaResourceContactTool({ resourceId, contactI
  * Method: getResourceContactToolListTool
  * Description: Retrieves resource-contact associations, optionally filtered by resource ID or contact ID.
  * Arguments: Optional resource ID and contact ID for filtering.
- * Returns: A promise that resolves to an McpToolCallResponse containing the list of associations.
+ * Returns: A promise that resolves to an McpToolCallResult containing the list of associations.
  */
-export async function getResourceContactToolListTool(resourceId?: number, contactId?: number): Promise<McpToolCallResponse> {
+export async function getResourceContactToolListTool(resourceId?: number, contactId?: number): Promise<McpToolCallResult> {
   console.log('--- getResourceContactToolListTool --- args:', { resourceId, contactId })
 
   try {
@@ -192,9 +192,9 @@ export async function getResourceContactToolListTool(resourceId?: number, contac
  * Method: updateServiceNinjaResourceContactTool
  * Description: Updates an existing resource-contact association.
  * Arguments: An object containing the resource ID, contact ID, and new role.
- * Returns: A promise that resolves to an McpToolCallResponse indicating success.
+ * Returns: A promise that resolves to an McpToolCallResult indicating success.
  */
-export async function updateServiceNinjaResourceContactTool(args: Partial<ServiceNinjaResourceContact> & { resourceId: number; contactId: number }): Promise<McpToolCallResponse> {
+export async function updateServiceNinjaResourceContactTool(args: Partial<ServiceNinjaResourceContact> & { resourceId: number; contactId: number }): Promise<McpToolCallResult> {
   console.log('--- updateServiceNinjaResourceContactTool --- args:', args)
   const { resourceId, contactId, role } = args
 
@@ -265,9 +265,9 @@ export async function updateServiceNinjaResourceContactTool(args: Partial<Servic
  * Method: deleteServiceNinjaResourceContactTool
  * Description: Deletes a resource-contact association.
  * Arguments: An object containing the resource ID and contact ID.
- * Returns: A promise that resolves to an McpToolCallResponse indicating success.
+ * Returns: A promise that resolves to an McpToolCallResult indicating success.
  */
-export async function deleteServiceNinjaResourceContactTool({ resourceId, contactId }: { resourceId: number; contactId: number }): Promise<McpToolCallResponse> {
+export async function deleteServiceNinjaResourceContactTool({ resourceId, contactId }: { resourceId: number; contactId: number }): Promise<McpToolCallResult> {
   console.log('--- deleteServiceNinjaResourceContactTool --- args:', { resourceId, contactId })
 
   if (!resourceId || !contactId) {

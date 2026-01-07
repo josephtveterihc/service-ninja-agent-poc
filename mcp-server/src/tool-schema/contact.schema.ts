@@ -4,6 +4,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'create_contact',
     description: 'Create a new contact',
+    functionName: 'createServiceNinjaContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -38,6 +39,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'list_contacts',
     description: 'List all contacts',
+    functionName: 'getContactToolListTool',
     inputSchema: {
       type: 'object',
       properties: {},
@@ -47,6 +49,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'get_contact_by_id',
     description: 'Get a contact by its ID',
+    functionName: 'readServiceNinjaContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -62,6 +65,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'get_contact_by_email',
     description: 'Get a contact by its email address',
+    functionName: 'readServiceNinjaContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -79,6 +83,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'update_contact',
     description: 'Update an existing contact',
+    functionName: 'updateServiceNinjaContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -118,6 +123,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'delete_contact',
     description: 'Delete an existing contact',
+    functionName: 'deleteServiceNinjaContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -133,6 +139,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'search_contacts',
     description: 'Search contacts by name or email',
+    functionName: 'searchServiceNinjaContactsTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -149,6 +156,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'create_resource_contact',
     description: 'Create a new resource-contact association',
+    functionName: 'createServiceNinjaResourceContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -175,6 +183,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'list_resource_contacts',
     description: 'List resource-contact associations, optionally filtered by resource or contact',
+    functionName: 'getResourceContactToolListTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -195,6 +204,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'get_resource_contact_by_ids',
     description: 'Get a specific resource-contact association by resource ID and contact ID',
+    functionName: 'readServiceNinjaResourceContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -215,6 +225,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'update_resource_contact',
     description: 'Update the role of an existing resource-contact association',
+    functionName: 'updateServiceNinjaResourceContactTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -241,6 +252,7 @@ export const contactToolSchemas: McpToolSchema[] = [
   {
     name: 'delete_resource_contact',
     description: 'Delete a resource-contact association',
+    functionName: 'deleteServiceNinjaResourceContactTool',
     inputSchema: {
       type: 'object',
       properties: {

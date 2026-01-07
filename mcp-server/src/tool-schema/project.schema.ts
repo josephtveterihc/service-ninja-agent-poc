@@ -4,6 +4,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'create_project',
     description: 'Create a new project',
+    functionName: 'createServiceNinjaProjectTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -26,6 +27,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'list_projects',
     description: 'List all projects',
+    functionName: 'getProjectToolListTool',
     inputSchema: {
       type: 'object',
       properties: {},
@@ -35,6 +37,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'update_project',
     description: 'Update an existing project',
+    functionName: 'updateServiceNinjaProjectTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -62,6 +65,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'delete_project',
     description: 'Delete an existing project',
+    functionName: 'deleteServiceNinjaProjectTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -77,6 +81,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'get_project_by_name',
     description: 'Get a project by its name',
+    functionName: 'readServiceNinjaProjectTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -93,6 +98,7 @@ export const projectToolSchemas: McpToolSchema[] = [
   {
     name: 'get_project_by_id',
     description: 'Get a project by its ID',
+    functionName: 'readServiceNinjaProjectTool',
     inputSchema: {
       type: 'object',
       properties: {

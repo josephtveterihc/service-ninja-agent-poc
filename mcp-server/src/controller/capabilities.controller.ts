@@ -1,16 +1,17 @@
 import packageJson from '../../package.json'
-import type { McpCapabilitiesResponse } from '../types'
+import type { McpCapabilitiesResult } from '../types'
 
-export function CapabilitiesController(): McpCapabilitiesResponse {
+export function CapabilitiesController(): McpCapabilitiesResult {
   return {
+    protocolVersion: '2025-11-25',
     capabilities: {
-      resources: false,
+      // resources: false,
       tools: {
-        listChanged: false,
-        subscribe: false,
+        listChanged: true,
+        // subscribe: false,
       },
-      prompts: false,
-      logging: false,
+      // prompts: false,
+      // logging: false,
     },
     serverInfo: {
       name: packageJson.name || 'service-ninja-mcp-server',

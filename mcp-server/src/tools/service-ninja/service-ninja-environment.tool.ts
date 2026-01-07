@@ -1,8 +1,8 @@
 import { createServiceNinjaEnv, deleteServiceNinjaEnv, getServiceNinjaEnv, getServiceNinjaEnvs, updateServiceNinjaEnv } from '../../repo/service-ninja-repo'
 import type { ServiceNinjaEnv } from '../../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../../types'
+import type { McpToolCallResult } from '../../types'
 
-export async function createServiceNinjaEnvironmentTool(args: Partial<ServiceNinjaEnv>): Promise<McpToolCallResponse> {
+export async function createServiceNinjaEnvironmentTool(args: Partial<ServiceNinjaEnv>): Promise<McpToolCallResult> {
   console.log('--- createServiceNinjaEnvironmentTool --- args:', args)
   const { name, description, projectId } = args
   const environments = await getServiceNinjaEnvs(projectId)
@@ -36,9 +36,9 @@ export async function createServiceNinjaEnvironmentTool(args: Partial<ServiceNin
  * Method: readServiceNinjaEnvironmentTool
  * Description: Retrieves a specific Service Ninja environment by name or ID.
  * Arguments: An object containing either the environment name or ID, and optionally projectId.
- * Returns: A promise that resolves to an McpToolCallResponse containing the environment details.
+ * Returns: A promise that resolves to an McpToolCallResult containing the environment details.
  */
-export async function readServiceNinjaEnvironmentTool({ name, id, projectId }: { name?: string; id?: number; projectId?: number }): Promise<McpToolCallResponse> {
+export async function readServiceNinjaEnvironmentTool({ name, id, projectId }: { name?: string; id?: number; projectId?: number }): Promise<McpToolCallResult> {
   const environment = await getServiceNinjaEnv({ name, id, projectId })
 
   if (!environment) {
@@ -58,8 +58,7 @@ export async function readServiceNinjaEnvironmentTool({ name, id, projectId }: {
     content: [
       {
         type: 'text',
-        data: JSON.stringify({ environment }),
-        text: `Environment details retrieved successfully.`,
+        text: JSON.stringify({ environment }),
       },
     ],
   }
@@ -71,9 +70,10 @@ export async function readServiceNinjaEnvironmentTool({ name, id, projectId }: {
  * Arguments: An object containing the environment ID and fields to update.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function updateServiceNinjaEnvironmentTool(params: Partial<ServiceNinjaEnv> & { id: number }): Promise<McpToolCallResponse> {
+export async function updateServiceNinjaEnvironmentTool(params: Partial<ServiceNinjaEnv> & { id: number }): Promise<McpToolCallResult> {
   console.log('--- updateServiceNinjaEnvironmentTool --- params:', params)
-  const res = await updateServiceNinjaEnv(params)
+  // TODO - Handle Throw
+  await updateServiceNinjaEnv(params)
   return { isError: false, content: [{ type: 'text', text: `Environment updated successfully.` }] }
 }
 
@@ -83,9 +83,10 @@ export async function updateServiceNinjaEnvironmentTool(params: Partial<ServiceN
  * Arguments: An object containing the environment ID.
  * Returns: A promise that resolves to an object indicating success.
  */
-export async function deleteServiceNinjaEnvironmentTool(params: { id: number }): Promise<McpToolCallResponse> {
+export async function deleteServiceNinjaEnvironmentTool(params: { id: number }): Promise<McpToolCallResult> {
   console.log('--- deleteServiceNinjaEnvironmentTool --- params:', params)
-  const res = await deleteServiceNinjaEnv(params.id)
+  // TODO - Handle Throw
+  await deleteServiceNinjaEnv(params.id)
   return { isError: false, content: [{ type: 'text', text: `Environment deleted successfully.` }] }
 }
 
@@ -93,18 +94,18 @@ export async function deleteServiceNinjaEnvironmentTool(params: { id: number }):
  * Method: getEnvironmentToolListTool
  * Description: Retrieves the list of Service Ninja environments from the database, optionally filtered by project.
  * Arguments: Optional projectId for filtering.
- * Returns: A promise that resolves to an McpToolCallResponse containing the list of environments.
+ * Returns: A promise that resolves to an McpToolCallResult containing the list of environments.
  */
-export async function getEnvironmentToolListTool(projectId?: number): Promise<McpToolCallResponse> {
+export async function getEnvironmentToolListTool(projectId?: number): Promise<McpToolCallResult> {
   console.log('--- getEnvironmentToolListTool --- projectId:', projectId)
   const environments = await getServiceNinjaEnvs(projectId)
+  console.log('--- Environments retrieved:', environments)
   return {
     isError: false,
     content: [
       {
         type: 'text',
-        data: JSON.stringify({ environments }),
-        text: `Environment list retrieved successfully.`,
+        text: JSON.stringify({ environments }),
       },
     ],
   }

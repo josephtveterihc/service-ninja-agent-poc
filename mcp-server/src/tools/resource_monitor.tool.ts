@@ -1,9 +1,9 @@
 import axios from 'axios'
 import { getServiceNinjaResource, getServiceNinjaResources } from '../repo/service-ninja-repo'
 import type { ServiceNinjaResource } from '../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../types'
+import type { McpToolCallResult } from '../types'
 
-export async function getResourceHealthStatusTool({ resourceId }: { resourceId: number }): Promise<McpToolCallResponse> {
+export async function getResourceHealthStatusTool({ resourceId }: { resourceId: number }): Promise<McpToolCallResult> {
   console.log('--- getResourceHealthStatusTool ---')
   try {
     const resource = (await getServiceNinjaResource({ id: resourceId })) as ServiceNinjaResource
@@ -40,8 +40,7 @@ export async function getResourceHealthStatusTool({ resourceId }: { resourceId: 
       content: [
         {
           type: 'text',
-          text: `Resource health status for resource ${name} retrieved successfully.`,
-          data: res.data,
+          text: JSON.stringify(res.data),
         },
       ],
     }
@@ -59,7 +58,7 @@ export async function getResourceHealthStatusTool({ resourceId }: { resourceId: 
   }
 }
 
-export async function getProjectResourcesHealthStatusTool({ projectId, envId }: { projectId: number; envId: number }): Promise<McpToolCallResponse> {
+export async function getProjectResourcesHealthStatusTool({ projectId, envId }: { projectId: number; envId: number }): Promise<McpToolCallResult> {
   console.log('--- getProjectResourcesHealthStatusTool ---')
   try {
     const resources = (await getServiceNinjaResources(projectId, envId)) as ServiceNinjaResource[]
@@ -70,8 +69,7 @@ export async function getProjectResourcesHealthStatusTool({ projectId, envId }: 
         content: [
           {
             type: 'text',
-            text: `No resources found for project ${projectId} in environment ${envId}`,
-            data: JSON.stringify([]),
+            text: JSON.stringify([]),
           },
         ],
       }
@@ -112,8 +110,7 @@ export async function getProjectResourcesHealthStatusTool({ projectId, envId }: 
       content: [
         {
           type: 'text',
-          text: `Health status retrieved for ${resources.length} resources in project ${projectId}, environment ${envId}`,
-          data: JSON.stringify(healthResults),
+          text: JSON.stringify(healthResults),
         },
       ],
     }
@@ -131,7 +128,7 @@ export async function getProjectResourcesHealthStatusTool({ projectId, envId }: 
   }
 }
 
-export async function getResourceAliveStatusTool({ resourceId }: { resourceId: number }): Promise<McpToolCallResponse> {
+export async function getResourceAliveStatusTool({ resourceId }: { resourceId: number }): Promise<McpToolCallResult> {
   console.log('--- getResourceAliveStatusTool ---')
   try {
     if (!resourceId) {
@@ -186,8 +183,7 @@ export async function getResourceAliveStatusTool({ resourceId }: { resourceId: n
       content: [
         {
           type: 'text',
-          text: `Resource ${name} is alive (status: ${res.status})`,
-          data: JSON.stringify({
+          text: JSON.stringify({
             alive: true,
             statusCode: res.status,
             responseTime: Date.now(),
@@ -202,8 +198,7 @@ export async function getResourceAliveStatusTool({ resourceId }: { resourceId: n
       content: [
         {
           type: 'text',
-          text: `Resource alive check failed: ${error.message}`,
-          data: JSON.stringify({
+          text: JSON.stringify({
             alive: false,
             error: error.message,
           }),

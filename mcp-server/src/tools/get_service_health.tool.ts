@@ -1,4 +1,4 @@
-import { type McpToolCallResponse } from '../types/server.types.js'
+import type { JsonObj, McpToolCallResult } from '../types'
 
 interface GetServiceHealthArgs {
   serviceId: string
@@ -6,7 +6,7 @@ interface GetServiceHealthArgs {
   includeHistory?: boolean
 }
 
-export function getServiceHealthTool(args: Record<string, any>): McpToolCallResponse {
+export function getServiceHealthTool(args: JsonObj): McpToolCallResult {
   try {
     const { serviceId, includeMetrics = true, includeHistory = false } = args as GetServiceHealthArgs
 
@@ -14,10 +14,12 @@ export function getServiceHealthTool(args: Record<string, any>): McpToolCallResp
     if (!serviceId || typeof serviceId !== 'string' || serviceId.trim().length === 0) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'serviceId is required and must be a non-empty string'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'serviceId is required and must be a non-empty string',
+          },
+        ],
       }
     }
 
@@ -32,64 +34,72 @@ export function getServiceHealthTool(args: Record<string, any>): McpToolCallResp
       uptime: '99.98%',
       version: '1.2.3',
       environment: 'prod',
-      metrics: includeMetrics ? {
-        cpu: 45.2,
-        memory: 67.8,
-        diskUsage: 23.1,
-        networkIn: 1024.5,
-        networkOut: 856.7,
-        activeConnections: 127,
-        requestsPerSecond: 20.8,
-        errorRate: 0.002
-      } : undefined,
-      history: includeHistory ? [
-        {
-          timestamp: new Date(Date.now() - 300000).toISOString(),
-          status: 'healthy',
-          responseTime: 138
-        },
-        {
-          timestamp: new Date(Date.now() - 600000).toISOString(),
-          status: 'healthy', 
-          responseTime: 145
-        },
-        {
-          timestamp: new Date(Date.now() - 900000).toISOString(),
-          status: 'healthy',
-          responseTime: 132
-        }
-      ] : undefined,
+      metrics: includeMetrics
+        ? {
+            cpu: 45.2,
+            memory: 67.8,
+            diskUsage: 23.1,
+            networkIn: 1024.5,
+            networkOut: 856.7,
+            activeConnections: 127,
+            requestsPerSecond: 20.8,
+            errorRate: 0.002,
+          }
+        : undefined,
+      history: includeHistory
+        ? [
+            {
+              timestamp: new Date(Date.now() - 300000).toISOString(),
+              status: 'healthy',
+              responseTime: 138,
+            },
+            {
+              timestamp: new Date(Date.now() - 600000).toISOString(),
+              status: 'healthy',
+              responseTime: 145,
+            },
+            {
+              timestamp: new Date(Date.now() - 900000).toISOString(),
+              status: 'healthy',
+              responseTime: 132,
+            },
+          ]
+        : undefined,
       dependencies: [
         {
           name: 'database',
           status: 'healthy',
-          lastCheck: new Date(Date.now() - 60000).toISOString()
+          lastCheck: new Date(Date.now() - 60000).toISOString(),
         },
         {
           name: 'cache',
           status: 'healthy',
-          lastCheck: new Date(Date.now() - 45000).toISOString()
-        }
-      ]
+          lastCheck: new Date(Date.now() - 45000).toISOString(),
+        },
+      ],
     }
 
     return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify(serviceHealth, null, 2)
-      }],
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(serviceHealth, null, 2),
+        },
+      ],
       _meta: {
         toolName: 'get_service_health',
-        executionTime: Date.now()
-      }
+        executionTime: Date.now(),
+      },
     }
   } catch (error) {
     return {
       isError: true,
-      content: [{
-        type: 'text',
-        text: `Failed to get service health: ${error instanceof Error ? error.message : 'Unknown error'}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text: `Failed to get service health: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        },
+      ],
     }
   }
 }

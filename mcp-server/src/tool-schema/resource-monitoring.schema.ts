@@ -4,6 +4,7 @@ export const resourceMonitoringToolSchemas: McpToolSchema[] = [
   {
     name: 'get_resource_health_status',
     description: 'Get health status of a specific resource by making a request to its health check URL',
+    functionName: 'getResourceHealthStatusTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -18,6 +19,7 @@ export const resourceMonitoringToolSchemas: McpToolSchema[] = [
   {
     name: 'get_project_resources_health_status',
     description: 'Get health status of all resources in a specific project environment',
+    functionName: 'getProjectResourcesHealthStatusTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -36,6 +38,7 @@ export const resourceMonitoringToolSchemas: McpToolSchema[] = [
   {
     name: 'get_resource_alive_status',
     description: 'Check if a specific resource is alive and responding by making a request to its alive check URL',
+    functionName: 'getResourceAliveStatusTool',
     inputSchema: {
       type: 'object',
       properties: {

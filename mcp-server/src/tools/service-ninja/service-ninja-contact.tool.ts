@@ -7,9 +7,9 @@ import {
   updateServiceNinjaContact,
 } from '../../repo/service-ninja-repo'
 import type { ServiceNinjaContact, CreateServiceNinjaContact } from '../../sql-lite/sql-lite-table.types'
-import type { McpToolCallResponse } from '../../types'
+import type { McpToolCallResult } from '../../types'
 
-export async function createServiceNinjaContactTool(args: CreateServiceNinjaContact): Promise<McpToolCallResponse> {
+export async function createServiceNinjaContactTool(args: CreateServiceNinjaContact): Promise<McpToolCallResult> {
   console.log('--- createServiceNinjaContactTool --- args:', args)
   const { firstName, lastName, email } = args
 
@@ -81,9 +81,9 @@ export async function createServiceNinjaContactTool(args: CreateServiceNinjaCont
  * Method: readServiceNinjaContactTool
  * Description: Retrieves a specific Service Ninja contact by email or ID.
  * Arguments: An object containing either the contact email or ID.
- * Returns: A promise that resolves to an McpToolCallResponse containing the contact details.
+ * Returns: A promise that resolves to an McpToolCallResult containing the contact details.
  */
-export async function readServiceNinjaContactTool({ email, id }: { email?: string; id?: number }): Promise<McpToolCallResponse> {
+export async function readServiceNinjaContactTool({ email, id }: { email?: string; id?: number }): Promise<McpToolCallResult> {
   console.log('--- readServiceNinjaContactTool --- args:', { email, id })
 
   if (!email && !id) {
@@ -148,9 +148,9 @@ export async function readServiceNinjaContactTool({ email, id }: { email?: strin
 /**
  * Method: getContactToolListTool
  * Description: Retrieves all Service Ninja contacts from the database.
- * Returns: A promise that resolves to an McpToolCallResponse containing the list of contacts.
+ * Returns: A promise that resolves to an McpToolCallResult containing the list of contacts.
  */
-export async function getContactToolListTool(): Promise<McpToolCallResponse> {
+export async function getContactToolListTool(): Promise<McpToolCallResult> {
   console.log('--- getContactToolListTool ---')
 
   try {
@@ -194,9 +194,9 @@ export async function getContactToolListTool(): Promise<McpToolCallResponse> {
  * Method: updateServiceNinjaContactTool
  * Description: Updates an existing Service Ninja contact.
  * Arguments: An object containing the contact ID and fields to update.
- * Returns: A promise that resolves to an McpToolCallResponse indicating success.
+ * Returns: A promise that resolves to an McpToolCallResult indicating success.
  */
-export async function updateServiceNinjaContactTool(args: Partial<ServiceNinjaContact> & { id: number }): Promise<McpToolCallResponse> {
+export async function updateServiceNinjaContactTool(args: Partial<ServiceNinjaContact> & { id: number }): Promise<McpToolCallResult> {
   console.log('--- updateServiceNinjaContactTool --- args:', args)
   const { id, firstName, lastName, email, phone } = args
 
@@ -297,9 +297,9 @@ export async function updateServiceNinjaContactTool(args: Partial<ServiceNinjaCo
  * Method: deleteServiceNinjaContactTool
  * Description: Deletes a Service Ninja contact.
  * Arguments: An object containing the contact ID.
- * Returns: A promise that resolves to an McpToolCallResponse indicating success.
+ * Returns: A promise that resolves to an McpToolCallResult indicating success.
  */
-export async function deleteServiceNinjaContactTool({ id }: { id: number }): Promise<McpToolCallResponse> {
+export async function deleteServiceNinjaContactTool({ id }: { id: number }): Promise<McpToolCallResult> {
   console.log('--- deleteServiceNinjaContactTool --- args:', { id })
 
   if (!id) {
@@ -369,9 +369,9 @@ export async function deleteServiceNinjaContactTool({ id }: { id: number }): Pro
  * Method: searchServiceNinjaContactsTool
  * Description: Searches Service Ninja contacts by name or email.
  * Arguments: An object containing the search term.
- * Returns: A promise that resolves to an McpToolCallResponse containing matching contacts.
+ * Returns: A promise that resolves to an McpToolCallResult containing matching contacts.
  */
-export async function searchServiceNinjaContactsTool({ searchTerm }: { searchTerm: string }): Promise<McpToolCallResponse> {
+export async function searchServiceNinjaContactsTool({ searchTerm }: { searchTerm: string }): Promise<McpToolCallResult> {
   console.log('--- searchServiceNinjaContactsTool --- args:', { searchTerm })
 
   if (!searchTerm || searchTerm.trim().length === 0) {

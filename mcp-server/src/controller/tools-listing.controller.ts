@@ -1,13 +1,9 @@
-import { environmentToolSchemas } from '../tool-schema/environment.schema'
-import { projectToolSchemas } from '../tool-schema/project.schema'
-import { resourceToolSchemas } from '../tool-schema/resource.schema'
-import { resourceMonitoringToolSchemas } from '../tool-schema/resource-monitoring.schema'
-import { contactToolSchemas } from '../tool-schema/contact.schema'
-import type { McpToolsResponse } from '../types'
+import type { McpToolsResult } from '../types'
+import { toolSchemaList } from '../tool-schema'
 
-export function ToolsListingController(): McpToolsResponse {
+export function ToolsListingController(): McpToolsResult {
   console.log('--- ToolsListingController ---')
   return {
-    tools: [...projectToolSchemas, ...environmentToolSchemas, ...resourceToolSchemas, ...resourceMonitoringToolSchemas, ...contactToolSchemas],
+    tools: toolSchemaList,
   }
 }

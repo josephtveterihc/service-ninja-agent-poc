@@ -4,6 +4,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'create_resource',
     description: 'Create a new resource within a project environment',
+    functionName: 'createServiceNinjaResourceTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -63,6 +64,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'list_resources',
     description: 'List all resources, optionally filtered by project and/or environment',
+    functionName: 'getResourceToolListTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -83,6 +85,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'get_resource_by_id',
     description: 'Get a resource by its ID',
+    functionName: 'readServiceNinjaResourceTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -108,6 +111,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'get_resource_by_name',
     description: 'Get a resource by its name',
+    functionName: 'readServiceNinjaResourceTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -134,6 +138,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'update_resource',
     description: 'Update an existing resource',
+    functionName: 'updateServiceNinjaResourceTool',
     inputSchema: {
       type: 'object',
       properties: {
@@ -198,6 +203,7 @@ export const resourceToolSchemas: McpToolSchema[] = [
   {
     name: 'delete_resource',
     description: 'Delete an existing resource',
+    functionName: 'deleteServiceNinjaResourceTool',
     inputSchema: {
       type: 'object',
       properties: {

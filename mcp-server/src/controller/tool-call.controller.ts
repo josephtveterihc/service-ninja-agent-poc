@@ -4,32 +4,28 @@ import {
   getProjectToolListTool,
   readServiceNinjaProjectTool,
   updateServiceNinjaProjectTool,
-} from '../tools/service-ninja/service-ninja-project.tool.js'
+} from '../tools/service-ninja/service-ninja-project.tool'
 import {
   createServiceNinjaEnvironmentTool,
   deleteServiceNinjaEnvironmentTool,
   getEnvironmentToolListTool,
   readServiceNinjaEnvironmentTool,
   updateServiceNinjaEnvironmentTool,
-} from '../tools/service-ninja/service-ninja-environment.tool.js'
+} from '../tools/service-ninja/service-ninja-environment.tool'
 import {
   createServiceNinjaResourceTool,
   deleteServiceNinjaResourceTool,
   getResourceToolListTool,
   readServiceNinjaResourceTool,
   updateServiceNinjaResourceTool,
-} from '../tools/service-ninja/service-ninja-resource.tool.js'
-
-import { type McpToolCallRequest, type McpToolCallResponse } from '../types/server.types.js'
-import type { ServiceNinjaContact, ServiceNinjaEnv, ServiceNinjaResource, ServiceNinjaResourceContact } from '../sql-lite/sql-lite-table.types.js'
-import { getProjectResourcesHealthStatusTool, getResourceAliveStatusTool, getResourceHealthStatusTool } from '../tools/resource_monitor.tool.js'
+} from '../tools/service-ninja/service-ninja-resource.tool'
 import {
   createServiceNinjaResourceContactTool,
   deleteServiceNinjaResourceContactTool,
   getResourceContactToolListTool,
   readServiceNinjaResourceContactTool,
   updateServiceNinjaResourceContactTool,
-} from '../tools/service-ninja/service-ninja-resource-contact.tool.js'
+} from '../tools/service-ninja/service-ninja-resource-contact.tool'
 import {
   createServiceNinjaContactTool,
   deleteServiceNinjaContactTool,
@@ -37,9 +33,13 @@ import {
   readServiceNinjaContactTool,
   searchServiceNinjaContactsTool,
   updateServiceNinjaContactTool,
-} from '../tools/service-ninja/service-ninja-contact.tool.js'
+} from '../tools/service-ninja/service-ninja-contact.tool'
+import { getProjectResourcesHealthStatusTool, getResourceAliveStatusTool, getResourceHealthStatusTool } from '../tools/resource_monitor.tool'
 
-export async function ToolCallController({ body }: { body: McpToolCallRequest }): Promise<McpToolCallResponse> {
+import type { ServiceNinjaContact, ServiceNinjaEnv, ServiceNinjaResource, ServiceNinjaResourceContact } from '../sql-lite/sql-lite-table.types'
+import type { McpToolCallParams, McpToolCallResult } from '../types'
+
+export async function ToolCallController({ body }: { body: McpToolCallParams }): Promise<McpToolCallResult> {
   console.log('--- ToolCallController ---')
   try {
     if (!body || typeof body !== 'object') {

@@ -1,4 +1,5 @@
-import { type McpToolCallResponse } from '../types/server.types.js'
+import type { McpToolCallResult } from '../types/mcp.types'
+import { type JsonObj } from '../types/server.types'
 
 interface SendNotificationArgs {
   type: 'email' | 'teams' | 'slack'
@@ -9,55 +10,56 @@ interface SendNotificationArgs {
   attachments?: string[]
 }
 
-export function sendNotificationTool(args: Record<string, any>): McpToolCallResponse {
+export function sendNotificationTool(args: JsonObj): McpToolCallResult {
   try {
-    const { 
-      type, 
-      recipient, 
-      subject, 
-      message, 
-      priority = 'normal',
-      attachments = []
-    } = args as SendNotificationArgs
+    const { type, recipient, subject, message, priority = 'normal', attachments = [] } = args as SendNotificationArgs
 
     // Input validation
     if (!type || !['email', 'teams', 'slack'].includes(type)) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'type is required and must be one of: email, teams, slack'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'type is required and must be one of: email, teams, slack',
+          },
+        ],
       }
     }
 
     if (!recipient || typeof recipient !== 'string' || recipient.trim().length === 0) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'recipient is required and must be a non-empty string'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'recipient is required and must be a non-empty string',
+          },
+        ],
       }
     }
 
     if (!subject || typeof subject !== 'string' || subject.trim().length === 0) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'subject is required and must be a non-empty string'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'subject is required and must be a non-empty string',
+          },
+        ],
       }
     }
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'message is required and must be a non-empty string'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'message is required and must be a non-empty string',
+          },
+        ],
       }
     }
 
@@ -65,20 +67,24 @@ export function sendNotificationTool(args: Record<string, any>): McpToolCallResp
     if (type === 'email' && !recipient.includes('@')) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'Invalid email format for recipient'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'Invalid email format for recipient',
+          },
+        ],
       }
     }
 
     if (type === 'teams' && !recipient.startsWith('https://')) {
       return {
         isError: true,
-        content: [{
-          type: 'text',
-          text: 'Teams recipient must be a valid webhook URL'
-        }]
+        content: [
+          {
+            type: 'text',
+            text: 'Teams recipient must be a valid webhook URL',
+          },
+        ],
       }
     }
 
@@ -86,12 +92,10 @@ export function sendNotificationTool(args: Record<string, any>): McpToolCallResp
     const validPriority = ['low', 'normal', 'high', 'critical'].includes(priority) ? priority : 'normal'
 
     // Validate attachments
-    const validAttachments = Array.isArray(attachments) 
-      ? attachments.filter(att => typeof att === 'string' && att.length > 0)
-      : []
+    const validAttachments = Array.isArray(attachments) ? attachments.filter((att) => typeof att === 'string' && att.length > 0) : []
 
     const notificationId = `notif_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    
+
     const result = {
       success: true,
       notificationId,
@@ -102,26 +106,30 @@ export function sendNotificationTool(args: Record<string, any>): McpToolCallResp
       priority: validPriority,
       attachments: validAttachments,
       status: 'sent',
-      sentAt: new Date().toISOString()
+      sentAt: new Date().toISOString(),
     }
 
     return {
-      content: [{
-        type: 'text',
-        text: JSON.stringify(result, null, 2)
-      }],
+      content: [
+        {
+          type: 'text',
+          text: JSON.stringify(result, null, 2),
+        },
+      ],
       _meta: {
         toolName: 'send_notification',
-        executionTime: Date.now()
-      }
+        executionTime: Date.now(),
+      },
     }
   } catch (error) {
     return {
       isError: true,
-      content: [{
-        type: 'text',
-        text: `Failed to send notification: ${error instanceof Error ? error.message : 'Unknown error'}`
-      }]
+      content: [
+        {
+          type: 'text',
+          text: `Failed to send notification: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        },
+      ],
     }
   }
 }
