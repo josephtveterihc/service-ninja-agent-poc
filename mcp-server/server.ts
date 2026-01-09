@@ -1,4 +1,4 @@
-import { Elysia, sse } from 'elysia'
+import { Elysia } from 'elysia'
 import * as DotEnv from 'dotenv'
 import express from 'express'
 import expressCors from 'cors'
@@ -56,48 +56,91 @@ function bootstrap1() {
 
     // @ts-ignore
     app.post('/mcp', async function ({ headers, body }: { headers: Record<string, string>; body: McpRequestTransport }) {
-      console.log('---- Incoming Request ----')
-      console.log('Headers:', headers)
-      console.log('Body:', body)
-      console.log('--------------------------')
-      const { method, params, id } = body
-      const response = {
-        jsonrpc: '2.0',
-        id,
-      } as McpResponseTransport
+      try {
+        console.log('---- Incoming Request ----')
+        console.log('Headers:', headers)
+        console.log('Body:', body)
+        console.log('--------------------------')
 
-      switch (method) {
-        case 'initialize':
-        case 'capabilities':
-          console.log('Handling initialize method')
-          const result = await CapabilitiesController()
+        if (!body || !body.method) {
+          return {
+            jsonrpc: '2.0',
+            id: body?.id || null,
+            error: {
+              code: -32600,
+              message: 'Invalid Request: Missing method',
+            },
+          }
+        }
 
-          return {
-            ...response,
-            result,
-          } as McpInitializeMCPServerResponse
-        case 'tools/list':
-          console.log('Handling tools/list method')
-          const tools = await ToolsListingController()
-          return {
-            ...response,
-            result: tools,
-          } as McpToolListResponse
-        case 'tool/call':
-        case 'tools/call':
-          console.log('Handling tool/call method')
-          const toolres = await ToolCallController({ body: params as unknown as McpToolCallRequest })
-          return {
-            ...response,
-            result: toolres,
-          } as McpToolCallResponse
-        default:
-          console.log(`Unhandled method: ${method}`)
+        const { method, params, id } = body
+        const response = {
+          jsonrpc: '2.0',
+          id,
+        } as McpResponseTransport
+
+        switch (method) {
+          case 'initialize':
+          case 'capabilities':
+            console.log('Handling initialize method')
+            const result = await CapabilitiesController()
+            const compatibleResult = {
+              ...result,
+              protocolVersion: '2024-11-05',
+            }
+            return {
+              ...response,
+              result: compatibleResult,
+            } as McpInitializeMCPServerResponse
+
+          case 'tools/list':
+            console.log('Handling tools/list method')
+            const tools = await ToolsListingController()
+            return {
+              ...response,
+              result: tools,
+            } as McpToolListResponse
+
+          case 'tool/call':
+          case 'tools/call':
+            console.log('Handling tool/call method')
+            const toolres = await ToolCallController({ body: params as unknown as McpToolCallRequest })
+            return {
+              ...response,
+              result: toolres,
+            } as McpToolCallResponse
+
+          case 'notifications/initialized':
+            console.log('Handling notifications/initialized method')
+            // Return empty success response for notifications
+            return {
+              ...response,
+              result: {},
+            }
+
+          default:
+            console.log(`Unhandled method: ${method}`)
+            return {
+              jsonrpc: '2.0',
+              id,
+              error: {
+                code: -32601,
+                message: `Method not found: ${method}`,
+              },
+            }
+        }
+      } catch (error) {
+        console.error('Error processing MCP request:', error)
+        return {
+          jsonrpc: '2.0',
+          id: body?.id || null,
+          error: {
+            code: -32603,
+            message: 'Internal error',
+            data: error instanceof Error ? error.message : 'Unknown error',
+          },
+        }
       }
-
-      // handle method: "notifications/initialized"
-
-      return {}
     })
     app.all('*', () => {
       throw new Error('Are You Lost? Have you tried Harry Christner?')

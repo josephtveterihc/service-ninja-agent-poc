@@ -1,6 +1,7 @@
 import type { JsonRpcRequestTransport, JsonRpcResponseTransport } from './json-rpc.types'
 import type { JsonObj } from './server.types'
 import type { ClientCapabilities, McpClientServerInfo, McpToolCallResultContent, McpToolsResult, ServerCapabilities } from './feature.types'
+import type { McpResourceLink } from './mcp-resource.types'
 
 /**
  * Complete MCP Method Enum
@@ -45,7 +46,7 @@ export enum McpMethodEnum {
 /// Incoming request parameters ///
 ///////////////////////////////////
 export interface McpRequestParams {
-  protocolVersion: '2025-11-25'
+  protocolVersion: '2024-11-05' | '2025-11-25' // Changed from '2025-11-25' to supported version
   capabilities: ClientCapabilities
   clientInfo: McpClientServerInfo
 }
@@ -58,7 +59,7 @@ export interface McpToolCallParams {
 /// Outgoing response result ///
 ////////////////////////////////
 export interface McpCapabilitiesResult {
-  protocolVersion?: '2025-11-25'
+  protocolVersion?: '2024-11-05' | '2025-11-25' // Changed from '2025-11-25' to supported version
   capabilities: ServerCapabilities
   serverInfo: McpClientServerInfo
 }
@@ -67,6 +68,10 @@ export interface McpToolCallResult {
   content: McpToolCallResultContent[]
   isError?: boolean
   _meta?: JsonObj
+}
+
+export interface McpResourceListResult {
+  resources: McpResourceLink[]
 }
 
 //////////////////////////////

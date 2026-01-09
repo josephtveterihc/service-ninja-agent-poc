@@ -3,9 +3,11 @@ import type { McpCapabilitiesResult } from '../types'
 
 export function CapabilitiesController(): McpCapabilitiesResult {
   return {
-    protocolVersion: '2025-11-25',
+    protocolVersion: '2024-11-05',
     capabilities: {
-      // resources: false,
+      resources: {
+        listChanged: true,
+      },
       tools: {
         listChanged: true,
         // subscribe: false,

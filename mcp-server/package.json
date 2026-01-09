@@ -19,6 +19,7 @@
     "@elysiajs/cors": "^1.4.1",
     "@modelcontextprotocol/sdk": "^1.25.1",
     "@n8n/json-schema-to-zod": "^1.6.0",
+    "@types/cors": "^2.8.19",
     "axios": "^1.13.2",
     "cors": "^2.8.5",
     "current-git-branch": "^2.0.2",
